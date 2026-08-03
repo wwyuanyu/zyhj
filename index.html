@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资源导航</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #e8ecff 0%, #f3e8ff 50%, #e0f0ff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  /* ===== 顶部标题 ===== */
+  .page-header {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeDown .6s ease;
+  }
+  .page-header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #4f6ef7, #9b59f6, #6dd5ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .page-header p {
+    color: #7c8db5;
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  /* ===== 条形分页容器 ===== */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(14px);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 8px 32px rgba(80, 100, 220, .15);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp .6s ease .1s both;
+  }
+  .tab-bar a {
+    padding: 12px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #5a6a8a;
+    transition: all .35s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .tab-bar a::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #4f6ef7, #9b59f6);
+    opacity: 0;
+    transition: opacity .35s;
+    z-index: 0;
+    border-radius: 999px;
+  }
+  .tab-bar a span { position: relative; z-index: 1; }
+  .tab-bar a:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(80,100,220,.3); }
+  .tab-bar a:hover::before { opacity: 1; }
+  .tab-bar a.active { color: #fff; box-shadow: 0 6px 24px rgba(80,100,220,.35); }
+  .tab-bar a.active::before { opacity: 1; }
+
+  /* ===== 内容卡片 ===== */
+  .content-area {
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+  }
+  .panel {
+    display: none;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(16px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 12px 48px rgba(80,100,220,.12);
+    animation: fadeIn .5s ease;
+  }
+  .panel.active { display: block; }
+
+  .panel-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .panel h2 {
+    font-size: 24px;
+    color: #3a4a6a;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .panel p {
+    color: #7c8db5;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+
+  /* 链接列表 */
+  .link-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .link-list li a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(79,110,247,.06), rgba(155,89,246,.06));
+    border: 1.5px solid rgba(79,110,247,.12);
+    border-radius: 16px;
+    text-decoration: none;
+    color: #4a5a7a;
+    font-weight: 500;
+    transition: all .3s;
+  }
+  .link-list li a:hover {
+    background: linear-gradient(135deg, rgba(79,110,247,.12), rgba(155,89,246,.12));
+    border-color: rgba(79,110,247,.3);
+    transform: translateX(6px);
+    color: #4f6ef7;
+  }
+  .link-list .link-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f6ef7, #9b59f6);
+    flex-shrink: 0;
+  }
+  .link-list .link-label { flex: 1; }
+  .link-list .link-url {
+    font-size: 12px;
+    color: #a0aec0;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .link-list .link-arrow {
+    font-size: 18px;
+    color: #9b59f6;
+    transition: transform .3s;
+  }
+  .link-list li a:hover .link-arrow { transform: translateX(4px); }
+
+  /* 按钮 */
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all .3s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #4f6ef7, #7c5cff);
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(79,110,247,.35);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(79,110,247,.45); }
+  .btn-secondary {
+    background: linear-gradient(135deg, #9b59f6, #c084fc);
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(155,89,246,.3);
+  }
+  .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(155,89,246,.4); }
+  .btn-outline {
+    background: rgba(255,255,255,.7);
+    color: #4f6ef7;
+    border: 2px solid rgba(79,110,247,.25);
+  }
+  .btn-outline:hover { border-color: #4f6ef7; background: rgba(79,110,247,.06); }
+
+  /* 标签 */
+  .tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .tag-blue { background: rgba(79,110,247,.1); color: #4f6ef7; }
+  .tag-purple { background: rgba(155,89,246,.1); color: #9b59f6; }
+  .tag-cyan { background: rgba(109,213,237,.15); color: #2bb4d8; }
+
+  /* 装饰 */
+  .deco-circle {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .35;
+    z-index: -1;
+    animation: float 8s ease-in-out infinite;
+  }
+  .deco-1 { width: 320px; height: 320px; background: #4f6ef7; top: -80px; left: -80px; }
+  .deco-2 { width: 260px; height: 260px; background: #9b59f6; bottom: 60px; right: -40px; animation-delay: -3s; }
+  .deco-3 { width: 200px; height: 200px; background: #6dd5ed; bottom: 200px; left: 10%; animation-delay: -5s; }
+
+  /* 底部 */
+  .footer {
+    margin-top: 48px;
+    color: #a0aec0;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* 动画 */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn   { from { opacity:0; transform:translateY(10px); }  to { opacity:1; transform:translateY(0); } }
+  @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-30px)} }
+
+  /* 响应式 */
+  @media (max-width: 640px) {
+    .page-header h1 { font-size: 26px; }
+    .tab-bar a { padding: 10px 18px; font-size: 13px; }
+    .panel { padding: 24px; }
+    .link-list .link-url { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 背景装饰 -->
+<div class="deco-circle deco-1"></div>
+<div class="deco-circle deco-2"></div>
+<div class="deco-circle deco-3"></div>
+
+<!-- 标题 -->
+<div class="page-header">
+  <h1>✨ 资源导航中心</h1>
+  <p>蓝 · 紫 · 亮色主题 · 一键直达</p>
+</div>
+
+<!-- 条形分页 -->
+<nav class="tab-bar" id="tabBar">
+  <a href="#milkshake" class="active" data-target="panel-milkshake"><span>🥤 冰昔</span></a>
+  <a href="#gopy" data-target="panel-gopy"><span>🚀 GOPY</span></a>
+  <a href="#shiyun" data-target="panel-shiyun"><span>🌸 诗云</span></a>
+  <a href="#al" data-target="panel-al"><span>🛡️ AL</span></a>
+  <a href="#exclusive" data-target="panel-exclusive"><span>⭐ 专属包</span></a>
+  <a href="#derivative" data-target="panel-derivative"><span>🔗 衍生</span></a>
+</nav>
+
+<!-- 内容区 -->
+<div class="content-area">
+
+  <!-- 冰昔 -->
+  <section class="panel active" id="panel-milkshake">
+    <div class="panel-icon">🥤</div>
+    <span class="tag tag-cyan">MilkShake</span>
+    <h2>冰昔 MilkShake</h2>
+    <p>冰昔是一款轻量高效的辅助工具，点击下方按钮即可快速访问下载页面。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">冰昔 MilkShake 下载页</span>
+          <span class="link-url">zm.airtoken.cc/shop/E6YTPHDK</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">🔗 立即访问</a>
+    </div>
+  </section>
+
+  <!-- GOPY -->
+  <section class="panel" id="panel-gopy">
+    <div class="panel-icon">🚀</div>
+    <span class="tag tag-blue">迷你GOPY辅助</span>
+    <h2>迷你GOPY辅助</h2>
+    <p>迷你GOPY辅助 — 熵云寄售平台提供，功能强大，操作简单，助力效率提升。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">迷你GOPY辅助 · 熵云寄售</span>
+          <span class="link-url">ka.mini1.vip/s/C4C8816C</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">GOPY蓝奏云下载</span>
+          <span class="link-url">yemou.lanzouv.com/b0066czmcf</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">🔗 立即访问</a>
+      <a class="btn btn-outline" href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">🔗 蓝奏云下载</a>
+    </div>
+  </section>
+
+  <!-- 专属包 -->
+  <section class="panel" id="panel-exclusive">
+    <div class="panel-icon">⭐</div>
+    <span class="tag tag-purple">专属资源包</span>
+    <h2>专属包（123云盘免登录下载）</h2>
+    <p>以下为专属资源包的两个下载链接，均来自 123 云盘，支持免登录不限速下载。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">专属包 · 链接一</span>
+          <span class="link-url">1812478494.share.123pan.cn/...APV8Vv</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">专属包 · 链接二</span>
+          <span class="link-url">1817872734.share.123pan.cn/...VSRvjv</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-secondary" href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">📦 下载链接一</a>
+      <a class="btn btn-secondary" href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">📦 下载链接二</a>
+    </div>
+  </section>
+
+  <!-- 诗云 -->
+  <section class="panel" id="panel-shiyun">
+    <div class="panel-icon">🌸</div>
+    <span class="tag tag-purple">诗云 ShiYun</span>
+    <h2>诗云</h2>
+    <p>诗云提供手机版与电脑版两种入口，点击下方链接即可跳转访问。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">诗云（手机版）</span>
+          <span class="link-url">zm.airtoken.cc/shop/QA6VAQZH</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.sxcing.cc/" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">诗云 · 云商城首页（电脑版）</span>
+          <span class="link-url">www.sxcing.cc</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-secondary" href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">📱 诗云手机版</a>
+      <a class="btn btn-outline" href="https://www.sxcing.cc/" target="_blank" rel="noopener">💻 诗云电脑版</a>
+    </div>
+  </section>
+
+  <!-- AL -->
+  <section class="panel" id="panel-al">
+    <div class="panel-icon">🛡️</div>
+    <span class="tag tag-blue">AL 资源</span>
+    <h2>AL</h2>
+    <p>点击下方链接即可跳转访问 AL 资源页面。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">AL · 资源页面</span>
+          <span class="link-url">new.cayfpay.cn/shop/18GYWIHC</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">🛡️ 立即访问 AL</a>
+    </div>
+  </section>
+
+  <!-- 衍生 -->
+  <section class="panel" id="panel-derivative">
+    <div class="panel-icon">🔗</div>
+    <span class="tag tag-blue">衍生资源</span>
+    <h2>衍生</h2>
+    <p>衍生资源入口，点击下方链接即可跳转访问。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">衍生资源页面</span>
+          <span class="link-url">v1.zhiyjs.com/shop/7W58MU1O</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">🔗 立即访问</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- 底部 -->
+<div class="footer">
+  © 2026 资源导航中心 · 蓝紫亮色主题 · 所有链接均在新标签页打开
+</div>
+
+<script>
+  // 条形分页切换
+  const tabs = document.querySelectorAll('.tab-bar a');
+  const panels = document.querySelectorAll('.panel');
+
+  function activate(tab) {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const target = document.getElementById(tab.dataset.target);
+    if (target) target.classList.add('active');
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      activate(tab);
+      // 更新 URL hash（无刷新）
+      history.replaceState(null, '', '#' + tab.dataset.target.replace('panel-', ''));
+    });
+  });
+
+  // 初始根据 hash 激活
+  const hash = location.hash.replace('#', '');
+  const map = { milkshake:'panel-milkshake', gopy:'panel-gopy', shiyun:'panel-shiyun', al:'panel-al', exclusive:'panel-exclusive', derivative:'panel-derivative' };
+  if (map[hash]) {
+    const t = document.querySelector(`.tab-bar a[data-target="${map[hash]}"]`);
+    if (t) activate(t);
+  }
+</script>
+</body>
+</html>
