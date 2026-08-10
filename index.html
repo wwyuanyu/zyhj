@@ -259,6 +259,7 @@
   <a href="#gopy" data-target="panel-gopy"><span>🚀 GOPY</span></a>
   <a href="#shiyun" data-target="panel-shiyun"><span>🌸 诗云</span></a>
   <a href="#al" data-target="panel-al"><span>🛡️ AL</span></a>
+  <a href="#xe" data-target="panel-xe"><span>⚡ XE</span></a>
   <a href="#exclusive" data-target="panel-exclusive"><span>⭐ 专属包</span></a>
   <a href="#derivative" data-target="panel-derivative"><span>🔗 衍生</span></a>
 </nav>
@@ -314,6 +315,35 @@
     <div class="btn-row">
       <a class="btn btn-primary" href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">🔗 立即访问</a>
       <a class="btn btn-outline" href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">🔗 蓝奏云下载</a>
+    </div>
+  </section>
+
+  <!-- XE迷你辅助 -->
+  <section class="panel" id="panel-xe">
+    <div class="panel-icon">⚡</div>
+    <span class="tag tag-cyan">XE 迷你辅助</span>
+    <h2>XE迷你辅助</h2>
+    <p>XE迷你辅助 — 自2020年起提供免费且开源的迷你世界辅助，拥有强大的绕过机制、卓越的性能优化和高度自定义性。点击下方链接即可访问官网下载。</p>
+    <ul class="link-list">
+      <li>
+        <a href="https://xexexe.xyz/" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <span class="link-label">XE迷你辅助 · 官方网站</span>
+          <span class="link-url">xexexe.xyz</span>
+          <span class="link-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <div style="margin-top:20px;padding:16px 20px;background:linear-gradient(135deg,rgba(79,110,247,.08),rgba(109,213,237,.08));border:1.5px dashed rgba(79,110,247,.25);border-radius:14px;">
+      <div style="font-size:14px;color:#4a5a7a;font-weight:600;margin-bottom:6px;">📌 下载说明</div>
+      <div style="font-size:13px;color:#7c8db5;line-height:1.8;">
+        下载密码：<code style="background:rgba(79,110,247,.1);padding:2px 10px;border-radius:6px;color:#4f6ef7;font-weight:700;font-size:14px;">xenb</code>
+        &nbsp;·&nbsp; 进入官网后选择对应版本（免费版 / 高级版 / 免root版）下载即可。
+      </div>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://xexexe.xyz/" target="_blank" rel="noopener">⚡ 访问官网</a>
+      <a class="btn btn-outline" href="https://xexexe.xyz/" target="_blank" rel="noopener">📥 前往下载</a>
     </div>
   </section>
 
@@ -450,7 +480,7 @@
 
   // 初始根据 hash 激活
   const hash = location.hash.replace('#', '');
-  const map = { milkshake:'panel-milkshake', gopy:'panel-gopy', shiyun:'panel-shiyun', al:'panel-al', exclusive:'panel-exclusive', derivative:'panel-derivative' };
+  const map = { milkshake:'panel-milkshake', gopy:'panel-gopy', shiyun:'panel-shiyun', al:'panel-al', xe:'panel-xe', exclusive:'panel-exclusive', derivative:'panel-derivative' };
   if (map[hash]) {
     const t = document.querySelector(`.tab-bar a[data-target="${map[hash]}"]`);
     if (t) activate(t);
