@@ -15,9 +15,94 @@
     font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: linear-gradient(135deg, #e8ecff 0%, #f3e8ff 50%, #e0f0ff 100%);
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 40px 20px 40px 20px;
+    gap: 24px;
+  }
+
+  /* ===== 左侧固定列表框 ===== */
+  .side-nav {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(16px);
+    padding: 16px 12px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(80, 100, 220, .15);
+    z-index: 100;
+    min-width: 140px;
+    animation: fadeRight .6s ease .15s both;
+  }
+  .side-nav-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0 8px 8px;
+    border-bottom: 1.5px solid rgba(79,110,247,.12);
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .side-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5a6a8a;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid transparent;
+  }
+  .side-nav-item::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #4f6ef7, #9b59f6);
+    opacity: 0;
+    transition: opacity .3s;
+    z-index: 0;
+    border-radius: 14px;
+  }
+  .side-nav-item span,
+  .side-nav-item .side-icon {
+    position: relative;
+    z-index: 1;
+  }
+  .side-nav-item .side-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .side-nav-item:hover {
+    color: #fff;
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(80,100,220,.3);
+  }
+  .side-nav-item:hover::before { opacity: 1; }
+  .side-nav-item.active {
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(80,100,220,.35);
+  }
+  .side-nav-item.active::before { opacity: 1; }
+
+  /* ===== 主内容区（左侧留出侧边栏空间） ===== */
+  .main-wrapper {
+    flex: 1;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 20px;
+    margin-left: 180px;
+    width: 100%;
   }
 
   /* ===== 顶部标题 ===== */
@@ -229,9 +314,26 @@
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
   @keyframes fadeIn   { from { opacity:0; transform:translateY(10px); }  to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
   @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-30px)} }
 
   /* 响应式 */
+  @media (max-width: 900px) {
+    body { flex-direction: column; padding: 20px; }
+    .side-nav {
+      position: static;
+      transform: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      min-width: unset;
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+    }
+    .side-nav-title { display: none; }
+    .side-nav-item { padding: 10px 14px; font-size: 13px; }
+    .main-wrapper { margin-left: 0; }
+  }
   @media (max-width: 640px) {
     .page-header h1 { font-size: 26px; }
     .tab-bar a { padding: 10px 18px; font-size: 13px; }
@@ -247,214 +349,229 @@
 <div class="deco-circle deco-2"></div>
 <div class="deco-circle deco-3"></div>
 
-<!-- 标题 -->
-<div class="page-header">
-  <h1>✨ 资源导航中心</h1>
-  <p>蓝 · 紫 · 亮色主题 · 一键直达</p>
-</div>
+<!-- ===== 左侧固定列表框 ===== -->
+<aside class="side-nav" id="sideNav">
+  <div class="side-nav-title">快捷导航</div>
+  <a class="side-nav-item active" href="https://wwyuanyu.github.io/mnhcxcsh/" target="_blank" rel="noopener">
+    <span class="side-icon">🏠</span>
+    <span>主页查询</span>
+  </a>
+  <!-- 后续可在此继续添加更多按钮 -->
+</aside>
 
-<!-- 条形分页 -->
-<nav class="tab-bar" id="tabBar">
-  <a href="#milkshake" class="active" data-target="panel-milkshake"><span>🥤 冰昔</span></a>
-  <a href="#gopy" data-target="panel-gopy"><span>🚀 GOPY</span></a>
-  <a href="#shiyun" data-target="panel-shiyun"><span>🌸 诗云</span></a>
-  <a href="#al" data-target="panel-al"><span>🛡️ AL</span></a>
-  <a href="#xe" data-target="panel-xe"><span>⚡ XE</span></a>
-  <a href="#exclusive" data-target="panel-exclusive"><span>⭐ 专属包</span></a>
-  <a href="#derivative" data-target="panel-derivative"><span>🔗 衍生</span></a>
-</nav>
+<!-- ===== 主内容区 ===== -->
+<div class="main-wrapper">
 
-<!-- 内容区 -->
-<div class="content-area">
+  <!-- 标题 -->
+  <div class="page-header">
+    <h1>✨ 资源导航中心</h1>
+    <p>蓝 · 紫 · 亮色主题 · 一键直达</p>
+  </div>
 
-  <!-- 冰昔 -->
-  <section class="panel active" id="panel-milkshake">
-    <div class="panel-icon">🥤</div>
-    <span class="tag tag-cyan">MilkShake</span>
-    <h2>冰昔 MilkShake</h2>
-    <p>冰昔是一款轻量高效的辅助工具，点击下方按钮即可快速访问下载页面。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">冰昔 MilkShake 下载页</span>
-          <span class="link-url">zm.airtoken.cc/shop/E6YTPHDK</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">🔗 立即访问</a>
-    </div>
-  </section>
+  <!-- 条形分页 -->
+  <nav class="tab-bar" id="tabBar">
+    <a href="#milkshake" class="active" data-target="panel-milkshake"><span>🥤 冰昔</span></a>
+    <a href="#gopy" data-target="panel-gopy"><span>🚀 GOPY</span></a>
+    <a href="#shiyun" data-target="panel-shiyun"><span>🌸 诗云</span></a>
+    <a href="#al" data-target="panel-al"><span>🛡️ AL</span></a>
+    <a href="#xe" data-target="panel-xe"><span>⚡ XE</span></a>
+    <a href="#exclusive" data-target="panel-exclusive"><span>⭐ 专属包</span></a>
+    <a href="#derivative" data-target="panel-derivative"><span>🔗 衍生</span></a>
+  </nav>
 
-  <!-- GOPY -->
-  <section class="panel" id="panel-gopy">
-    <div class="panel-icon">🚀</div>
-    <span class="tag tag-blue">迷你GOPY辅助</span>
-    <h2>迷你GOPY辅助</h2>
-    <p>迷你GOPY辅助 — 熵云寄售平台提供，功能强大，操作简单，助力效率提升。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">迷你GOPY辅助 · 熵云寄售</span>
-          <span class="link-url">ka.mini1.vip/s/C4C8816C</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">GOPY蓝奏云下载</span>
-          <span class="link-url">yemou.lanzouv.com/b0066czmcf</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">🔗 立即访问</a>
-      <a class="btn btn-outline" href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">🔗 蓝奏云下载</a>
-    </div>
-  </section>
+  <!-- 内容区 -->
+  <div class="content-area">
 
-  <!-- XE迷你辅助 -->
-  <section class="panel" id="panel-xe">
-    <div class="panel-icon">⚡</div>
-    <span class="tag tag-cyan">XE 迷你辅助</span>
-    <h2>XE迷你辅助</h2>
-    <p>XE迷你辅助 — 自2020年起提供免费且开源的迷你世界辅助，拥有强大的绕过机制、卓越的性能优化和高度自定义性。点击下方链接即可访问官网下载。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://xexexe.xyz/" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">XE迷你辅助 · 官方网站</span>
-          <span class="link-url">xexexe.xyz</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div style="margin-top:20px;padding:16px 20px;background:linear-gradient(135deg,rgba(79,110,247,.08),rgba(109,213,237,.08));border:1.5px dashed rgba(79,110,247,.25);border-radius:14px;">
-      <div style="font-size:14px;color:#4a5a7a;font-weight:600;margin-bottom:6px;">📌 下载说明</div>
-      <div style="font-size:13px;color:#7c8db5;line-height:1.8;">
-        下载密码：<code style="background:rgba(79,110,247,.1);padding:2px 10px;border-radius:6px;color:#4f6ef7;font-weight:700;font-size:14px;">xenb</code>
-        &nbsp;·&nbsp; 进入官网后选择对应版本（免费版 / 高级版 / 免root版）下载即可。
+    <!-- 冰昔 -->
+    <section class="panel active" id="panel-milkshake">
+      <div class="panel-icon">🥤</div>
+      <span class="tag tag-cyan">MilkShake</span>
+      <h2>冰昔 MilkShake</h2>
+      <p>冰昔是一款轻量高效的辅助工具，点击下方按钮即可快速访问下载页面。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">冰昔 MilkShake 下载页</span>
+            <span class="link-url">zm.airtoken.cc/shop/E6YTPHDK</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://zm.airtoken.cc/shop/E6YTPHDK" target="_blank" rel="noopener">🔗 立即访问</a>
       </div>
-    </div>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://xexexe.xyz/" target="_blank" rel="noopener">⚡ 访问官网</a>
-      <a class="btn btn-outline" href="https://xexexe.xyz/" target="_blank" rel="noopener">📥 前往下载</a>
-    </div>
-  </section>
+    </section>
 
-  <!-- 专属包 -->
-  <section class="panel" id="panel-exclusive">
-    <div class="panel-icon">⭐</div>
-    <span class="tag tag-purple">专属资源包</span>
-    <h2>专属包（123云盘免登录下载）</h2>
-    <p>以下为专属资源包的两个下载链接，均来自 123 云盘，支持免登录不限速下载。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">专属包 · 链接一</span>
-          <span class="link-url">1812478494.share.123pan.cn/...APV8Vv</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">专属包 · 链接二</span>
-          <span class="link-url">1817872734.share.123pan.cn/...VSRvjv</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-secondary" href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">📦 下载链接一</a>
-      <a class="btn btn-secondary" href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">📦 下载链接二</a>
-    </div>
-  </section>
+    <!-- GOPY -->
+    <section class="panel" id="panel-gopy">
+      <div class="panel-icon">🚀</div>
+      <span class="tag tag-blue">迷你GOPY辅助</span>
+      <h2>迷你GOPY辅助</h2>
+      <p>迷你GOPY辅助 — 熵云寄售平台提供，功能强大，操作简单，助力效率提升。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">迷你GOPY辅助 · 熵云寄售</span>
+            <span class="link-url">ka.mini1.vip/s/C4C8816C</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">GOPY蓝奏云下载</span>
+            <span class="link-url">yemou.lanzouv.com/b0066czmcf</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://ka.mini1.vip/s/C4C8816C" target="_blank" rel="noopener">🔗 立即访问</a>
+        <a class="btn btn-outline" href="https://yemou.lanzouv.com/b0066czmcf" target="_blank" rel="noopener">🔗 蓝奏云下载</a>
+      </div>
+    </section>
 
-  <!-- 诗云 -->
-  <section class="panel" id="panel-shiyun">
-    <div class="panel-icon">🌸</div>
-    <span class="tag tag-purple">诗云 ShiYun</span>
-    <h2>诗云</h2>
-    <p>诗云提供手机版与电脑版两种入口，点击下方链接即可跳转访问。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">诗云（手机版）</span>
-          <span class="link-url">zm.airtoken.cc/shop/QA6VAQZH</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.sxcing.cc/" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">诗云 · 云商城首页（电脑版）</span>
-          <span class="link-url">www.sxcing.cc</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-secondary" href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">📱 诗云手机版</a>
-      <a class="btn btn-outline" href="https://www.sxcing.cc/" target="_blank" rel="noopener">💻 诗云电脑版</a>
-    </div>
-  </section>
+    <!-- XE迷你辅助 -->
+    <section class="panel" id="panel-xe">
+      <div class="panel-icon">⚡</div>
+      <span class="tag tag-cyan">XE 迷你辅助</span>
+      <h2>XE迷你辅助</h2>
+      <p>XE迷你辅助 — 自2020年起提供免费且开源的迷你世界辅助，拥有强大的绕过机制、卓越的性能优化和高度自定义性。点击下方链接即可访问官网下载。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://xexexe.xyz/" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">XE迷你辅助 · 官方网站</span>
+            <span class="link-url">xexexe.xyz</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div style="margin-top:20px;padding:16px 20px;background:linear-gradient(135deg,rgba(79,110,247,.08),rgba(109,213,237,.08));border:1.5px dashed rgba(79,110,247,.25);border-radius:14px;">
+        <div style="font-size:14px;color:#4a5a7a;font-weight:600;margin-bottom:6px;">📌 下载说明</div>
+        <div style="font-size:13px;color:#7c8db5;line-height:1.8;">
+          下载密码：<code style="background:rgba(79,110,247,.1);padding:2px 10px;border-radius:6px;color:#4f6ef7;font-weight:700;font-size:14px;">xenb</code>
+          &nbsp;·&nbsp; 进入官网后选择对应版本（免费版 / 高级版 / 免root版）下载即可。
+        </div>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://xexexe.xyz/" target="_blank" rel="noopener">⚡ 访问官网</a>
+        <a class="btn btn-outline" href="https://xexexe.xyz/" target="_blank" rel="noopener">📥 前往下载</a>
+      </div>
+    </section>
 
-  <!-- AL -->
-  <section class="panel" id="panel-al">
-    <div class="panel-icon">🛡️</div>
-    <span class="tag tag-blue">AL 资源</span>
-    <h2>AL</h2>
-    <p>点击下方链接即可跳转访问 AL 资源页面。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">AL · 资源页面</span>
-          <span class="link-url">new.cayfpay.cn/shop/18GYWIHC</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">🛡️ 立即访问 AL</a>
-    </div>
-  </section>
+    <!-- 专属包 -->
+    <section class="panel" id="panel-exclusive">
+      <div class="panel-icon">⭐</div>
+      <span class="tag tag-purple">专属资源包</span>
+      <h2>专属包（123云盘免登录下载）</h2>
+      <p>以下为专属资源包的两个下载链接，均来自 123 云盘，支持免登录不限速下载。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">专属包 · 链接一</span>
+            <span class="link-url">1812478494.share.123pan.cn/...APV8Vv</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">专属包 · 链接二</span>
+            <span class="link-url">1817872734.share.123pan.cn/...VSRvjv</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-secondary" href="https://1812478494.share.123pan.cn/123pan/APV8Vv-sEDWh?notoken=1" target="_blank" rel="noopener">📦 下载链接一</a>
+        <a class="btn btn-secondary" href="https://1817872734.share.123pan.cn/123pan/VSRvjv-lwfOA?notoken=1" target="_blank" rel="noopener">📦 下载链接二</a>
+      </div>
+    </section>
 
-  <!-- 衍生 -->
-  <section class="panel" id="panel-derivative">
-    <div class="panel-icon">🔗</div>
-    <span class="tag tag-blue">衍生资源</span>
-    <h2>衍生</h2>
-    <p>衍生资源入口，点击下方链接即可跳转访问。</p>
-    <ul class="link-list">
-      <li>
-        <a href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <span class="link-label">衍生资源页面</span>
-          <span class="link-url">v1.zhiyjs.com/shop/7W58MU1O</span>
-          <span class="link-arrow">→</span>
-        </a>
-      </li>
-    </ul>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">🔗 立即访问</a>
-    </div>
-  </section>
+    <!-- 诗云 -->
+    <section class="panel" id="panel-shiyun">
+      <div class="panel-icon">🌸</div>
+      <span class="tag tag-purple">诗云 ShiYun</span>
+      <h2>诗云</h2>
+      <p>诗云提供手机版与电脑版两种入口，点击下方链接即可跳转访问。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">诗云（手机版）</span>
+            <span class="link-url">zm.airtoken.cc/shop/QA6VAQZH</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.sxcing.cc/" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">诗云 · 云商城首页（电脑版）</span>
+            <span class="link-url">www.sxcing.cc</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-secondary" href="https://zm.airtoken.cc/shop/QA6VAQZH" target="_blank" rel="noopener">📱 诗云手机版</a>
+        <a class="btn btn-outline" href="https://www.sxcing.cc/" target="_blank" rel="noopener">💻 诗云电脑版</a>
+      </div>
+    </section>
 
-</div>
+    <!-- AL -->
+    <section class="panel" id="panel-al">
+      <div class="panel-icon">🛡️</div>
+      <span class="tag tag-blue">AL 资源</span>
+      <h2>AL</h2>
+      <p>点击下方链接即可跳转访问 AL 资源页面。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">AL · 资源页面</span>
+            <span class="link-url">new.cayfpay.cn/shop/18GYWIHC</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://new.cayfpay.cn/shop/18GYWIHC" target="_blank" rel="noopener">🛡️ 立即访问 AL</a>
+      </div>
+    </section>
 
-<!-- 底部 -->
-<div class="footer">
-  © 2026 渊和妤 · 保留所有权利 · DESIGNED FOR THE ELITE
-</div>
+    <!-- 衍生 -->
+    <section class="panel" id="panel-derivative">
+      <div class="panel-icon">🔗</div>
+      <span class="tag tag-blue">衍生资源</span>
+      <h2>衍生</h2>
+      <p>衍生资源入口，点击下方链接即可跳转访问。</p>
+      <ul class="link-list">
+        <li>
+          <a href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">
+            <span class="link-dot"></span>
+            <span class="link-label">衍生资源页面</span>
+            <span class="link-url">v1.zhiyjs.com/shop/7W58MU1O</span>
+            <span class="link-arrow">→</span>
+          </a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://v1.zhiyjs.com/shop/7W58MU1O" target="_blank" rel="noopener">🔗 立即访问</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    © 2026 渊和妤 · 保留所有权利 · DESIGNED FOR THE ELITE
+  </div>
+
+</div><!-- /main-wrapper -->
 
 <script>
   // 条形分页切换
