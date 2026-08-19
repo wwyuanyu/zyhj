@@ -1,21 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>资源导航</title>
 <link rel="icon" type="image/jpeg" sizes="32x32" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEY22ZqeGDVMsmh3m6U368qqg9uPDBy_AACrCIAAhVdyVdqcQo2GYsynj0E.jpg">
 <style>
-  :root {
-    --c-primary: #4f6ef7;
-    --c-purple:  #9b59f6;
-    --c-cyan:    #6dd5ed;
-    --c-text:    #4a5a7a;
-    --c-sub:     #7c8db5;
-    --c-mute:    #a0aec0;
-    --grad-main: linear-gradient(135deg, var(--c-primary), var(--c-purple));
-    --ease:      cubic-bezier(.4, 0, .2, 1);
-    --dur:       .3s;
+  /* ===== 暗色（星空）主题变量 —— 默认 ===== */
+  :root,
+  [data-theme="dark"] {
+    --c-primary:      #7c5cff;
+    --c-purple:       #b388ff;
+    --c-cyan:         #64e0ff;
+    --c-text:         #d8d8f0;
+    --c-sub:          #a0a0c8;
+    --c-mute:         #6e6e9a;
+    --c-heading:      #ececff;
+    --grad-main:      linear-gradient(135deg, #7c5cff, #b388ff);
+    --grad-stars:     radial-gradient(ellipse at 20% 50%, rgba(124,92,255,.15), transparent 60%),
+                      radial-gradient(ellipse at 80% 20%, rgba(100,224,255,.10), transparent 50%),
+                      linear-gradient(160deg, #0a0a1a 0%, #0f0a2a 30%, #0d0a3a 50%, #100a30 70%, #0a0a1a 100%);
+    --bg-panel:       rgba(18, 16, 48, 0.78);
+    --bg-panel-hover:  rgba(24, 20, 60, 0.88);
+    --bg-side:        rgba(18, 16, 48, 0.82);
+    --bg-tab:         rgba(18, 16, 48, 0.72);
+    --bg-link:        linear-gradient(135deg, rgba(124,92,255,.10), rgba(179,136,255,.08));
+    --bg-link-hover:  linear-gradient(135deg, rgba(124,92,255,.18), rgba(179,136,255,.14));
+    --border-link:    rgba(124,92,255,.22);
+    --border-link-h:  rgba(124,92,255,.45);
+    --bg-btn-outline: rgba(18,16,48,.6);
+    --border-btn-out: rgba(124,92,255,.35);
+    --bg-info:        linear-gradient(135deg, rgba(124,92,255,.10), rgba(100,224,255,.08));
+    --border-info:    rgba(124,92,255,.30);
+    --bg-info-code:   rgba(124,92,255,.18);
+    --shadow-panel:   0 12px 48px rgba(0,0,0,.45), 0 0 80px rgba(124,92,255,.08);
+    --shadow-nav:     0 8px 32px rgba(0,0,0,.45), 0 0 40px rgba(124,92,255,.12);
+    --shadow-tab:     0 8px 32px rgba(0,0,0,.40);
+    --shadow-btn-p:   0 6px 24px rgba(124,92,255,.40);
+    --shadow-btn-p-h: 0 10px 36px rgba(124,92,255,.55);
+    --shadow-btn-s:   0 6px 24px rgba(179,136,255,.30);
+    --shadow-btn-s-h: 0 10px 32px rgba(179,136,255,.45);
+    --tag-blue-bg:    rgba(124,92,255,.18);
+    --tag-purple-bg:  rgba(179,136,255,.18);
+    --tag-cyan-bg:    rgba(100,224,255,.14);
+    --ease:           cubic-bezier(.4, 0, .2, 1);
+    --dur:            .35s;
+  }
+
+  /* ===== 亮色主题变量 ===== */
+  [data-theme="light"] {
+    --c-primary:      #4f6ef7;
+    --c-purple:       #9b59f6;
+    --c-cyan:         #6dd5ed;
+    --c-text:         #4a5a7a;
+    --c-sub:          #7c8db5;
+    --c-mute:         #a0aec0;
+    --c-heading:      #3a4a6a;
+    --grad-main:      linear-gradient(135deg, #4f6ef7, #9b59f6);
+    --grad-stars:     linear-gradient(135deg, #e8ecff, #f3e8ff 50%, #e0f0ff);
+    --bg-panel:       rgba(255,255,255,.88);
+    --bg-panel-hover: rgba(255,255,255,.95);
+    --bg-side:        rgba(255,255,255,.85);
+    --bg-tab:         rgba(255,255,255,.75);
+    --bg-link:        linear-gradient(135deg, rgba(79,110,247,.06), rgba(155,89,246,.06));
+    --bg-link-hover:  linear-gradient(135deg, rgba(79,110,247,.12), rgba(155,89,246,.12));
+    --border-link:    rgba(79,110,247,.12);
+    --border-link-h:  rgba(79,110,247,.30);
+    --bg-btn-outline: rgba(255,255,255,.7);
+    --border-btn-out: rgba(79,110,247,.25);
+    --bg-info:        linear-gradient(135deg, rgba(79,110,247,.08), rgba(109,213,237,.08));
+    --border-info:    rgba(79,110,247,.25);
+    --bg-info-code:   rgba(79,110,247,.10);
+    --shadow-panel:   0 12px 48px rgba(80,100,220,.12);
+    --shadow-nav:     0 8px 32px rgba(80,100,220,.15);
+    --shadow-tab:     0 8px 32px rgba(80,100,220,.15);
+    --shadow-btn-p:   0 6px 24px rgba(79,110,247,.35);
+    --shadow-btn-p-h: 0 10px 32px rgba(79,110,247,.45);
+    --shadow-btn-s:   0 6px 24px rgba(155,89,246,.30);
+    --shadow-btn-s-h: 0 10px 32px rgba(155,89,246,.40);
+    --tag-blue-bg:    rgba(79,110,247,.10);
+    --tag-purple-bg:  rgba(155,89,246,.10);
+    --tag-cyan-bg:    rgba(109,213,237,.15);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,13 +89,57 @@
     min-height: 100vh;
     font: 15px/1.6 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     color: var(--c-text);
-    background: linear-gradient(135deg, #e8ecff, #f3e8ff 50%, #e0f0ff);
+    background: var(--grad-stars);
+    background-color: #0a0a1a;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     padding: 40px 20px;
     gap: 24px;
+    position: relative;
+    overflow-x: hidden;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
   }
+
+  /* ===== 星空画布 ===== */
+  #star-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity .6s var(--ease);
+  }
+  [data-theme="light"] #star-canvas { opacity: 0; }
+
+  /* ===== 昼夜切换按钮 ===== */
+  .theme-toggle {
+    position: fixed;
+    top: 20px; right: 24px;
+    z-index: 200;
+    width: 52px; height: 52px;
+    border: 2px solid var(--border-link);
+    border-radius: 50%;
+    background: var(--bg-panel);
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: all var(--dur) var(--ease);
+    box-shadow: var(--shadow-nav);
+  }
+  .theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    border-color: var(--c-purple);
+    box-shadow: 0 0 24px rgba(124,92,255,.4);
+  }
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon { transition: opacity .3s, transform .3s; position: absolute; }
+  /* 默认暗色：显示月亮（点击切亮色） */
+  .theme-toggle .icon-sun  { opacity: 0; transform: rotate(-90deg) scale(.5); }
+  .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+  [data-theme="light"] .theme-toggle .icon-sun  { opacity: 1; transform: rotate(0) scale(1); }
+  [data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(.5); }
 
   /* ===== 左侧导航 ===== */
   .side-nav {
@@ -41,11 +150,13 @@
     gap: 10px;
     min-width: 140px;
     padding: 16px 12px;
-    background: rgba(255,255,255,.85);
+    background: var(--bg-side);
     backdrop-filter: blur(16px);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(80,100,220,.15);
+    box-shadow: var(--shadow-nav);
     z-index: 100;
+    border: 1.5px solid rgba(124,92,255,.15);
+    transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
   }
   .side-nav-title {
     font-size: 12px; font-weight: 700;
@@ -53,7 +164,7 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 0 8px 8px;
-    border-bottom: 1.5px solid rgba(79,110,247,.12);
+    border-bottom: 1.5px solid rgba(124,92,255,.18);
     margin-bottom: 4px;
     text-align: center;
   }
@@ -63,7 +174,7 @@
     border-radius: 14px;
     text-decoration: none;
     font-size: 14px; font-weight: 600;
-    color: #5a6a8a;
+    color: var(--c-sub);
     border: 1.5px solid transparent;
     transition: all var(--dur) var(--ease);
   }
@@ -72,12 +183,12 @@
     color: #fff;
     background: var(--grad-main);
     transform: translateX(4px);
-    box-shadow: 0 6px 20px rgba(80,100,220,.3);
+    box-shadow: 0 6px 20px rgba(124,92,255,.35);
   }
   .side-nav-item.active {
     color: #fff;
     background: var(--grad-main);
-    box-shadow: 0 6px 24px rgba(80,100,220,.35);
+    box-shadow: 0 6px 24px rgba(124,92,255,.40);
   }
 
   /* ===== 主内容区 ===== */
@@ -87,16 +198,24 @@
     align-items: center;
     margin-left: 180px;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   /* 页面标题 */
   .page-header { text-align: center; margin-bottom: 36px; }
   .page-header h1 {
     font-size: 36px; font-weight: 800;
-    background: linear-gradient(90deg, var(--c-primary), var(--c-purple), var(--c-cyan));
+    background: linear-gradient(90deg, var(--c-cyan), var(--c-primary), var(--c-purple), var(--c-cyan));
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 2px;
+    animation: shimmer 6s ease infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% center; }
+    50%      { background-position: 200% center; }
   }
   .page-header p { color: var(--c-sub); margin-top: 8px; font-size: 15px; }
 
@@ -105,29 +224,31 @@
     display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
     padding: 8px;
     margin-bottom: 36px;
-    background: rgba(255,255,255,.75);
+    background: var(--bg-tab);
     backdrop-filter: blur(14px);
     border-radius: 999px;
-    box-shadow: 0 8px 32px rgba(80,100,220,.15);
+    box-shadow: var(--shadow-tab);
+    border: 1.5px solid rgba(124,92,255,.12);
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
   }
   .tab-bar a {
     padding: 12px 28px;
     border-radius: 999px;
     text-decoration: none;
     font-size: 15px; font-weight: 600;
-    color: #5a6a8a;
+    color: var(--c-sub);
     transition: all var(--dur) var(--ease);
   }
   .tab-bar a:hover {
     color: #fff;
     background: var(--grad-main);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(80,100,220,.3);
+    box-shadow: 0 6px 20px rgba(124,92,255,.35);
   }
   .tab-bar a.active {
     color: #fff;
     background: var(--grad-main);
-    box-shadow: 0 6px 24px rgba(80,100,220,.35);
+    box-shadow: 0 6px 24px rgba(124,92,255,.40);
   }
 
   /* ===== 面板 ===== */
@@ -135,14 +256,16 @@
   .panel {
     display: none;
     padding: 40px;
-    background: rgba(255,255,255,.85);
+    background: var(--bg-panel);
     backdrop-filter: blur(16px);
     border-radius: 24px;
-    box-shadow: 0 12px 48px rgba(80,100,220,.12);
+    box-shadow: var(--shadow-panel);
+    border: 1.5px solid rgba(124,92,255,.12);
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
   }
   .panel.active { display: block; }
   .panel-icon { font-size: 48px; margin-bottom: 16px; }
-  .panel h2 { font-size: 24px; color: #3a4a6a; margin-bottom: 12px; font-weight: 700; }
+  .panel h2 { font-size: 24px; color: var(--c-heading); margin-bottom: 12px; font-weight: 700; }
   .panel > p { color: var(--c-sub); line-height: 1.8; margin-bottom: 20px; }
 
   /* 标签 */
@@ -153,17 +276,17 @@
     font-size: 12px; font-weight: 600;
     margin-bottom: 16px;
   }
-  .tag-blue   { background: rgba(79,110,247,.1);  color: var(--c-primary); }
-  .tag-purple { background: rgba(155,89,246,.1);  color: var(--c-purple); }
-  .tag-cyan   { background: rgba(109,213,237,.15); color: #2bb4d8; }
+  .tag-blue   { background: var(--tag-blue-bg);   color: var(--c-primary); }
+  .tag-purple { background: var(--tag-purple-bg); color: var(--c-purple); }
+  .tag-cyan   { background: var(--tag-cyan-bg);   color: var(--c-cyan); }
 
   /* ===== 链接列表 ===== */
   .link-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
   .link-list a {
     display: flex; align-items: center; gap: 14px;
     padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(79,110,247,.06), rgba(155,89,246,.06));
-    border: 1.5px solid rgba(79,110,247,.12);
+    background: var(--bg-link);
+    border: 1.5px solid var(--border-link);
     border-radius: 16px;
     text-decoration: none;
     color: var(--c-text);
@@ -171,10 +294,11 @@
     transition: all var(--dur) var(--ease);
   }
   .link-list a:hover {
-    background: linear-gradient(135deg, rgba(79,110,247,.12), rgba(155,89,246,.12));
-    border-color: rgba(79,110,247,.3);
+    background: var(--bg-link-hover);
+    border-color: var(--border-link-h);
     transform: translateX(6px);
-    color: var(--c-primary);
+    color: var(--c-purple);
+    box-shadow: 0 4px 20px rgba(124,92,255,.15);
   }
   .link-dot {
     width: 10px; height: 10px;
@@ -182,6 +306,7 @@
     background: var(--grad-main);
     flex-shrink: 0;
     transition: transform var(--dur) var(--ease);
+    box-shadow: 0 0 8px rgba(124,92,255,.5);
   }
   .link-list a:hover .link-dot { transform: scale(1.3); }
   .link-label { flex: 1; }
@@ -209,42 +334,42 @@
   }
   .btn:active { transform: scale(.97); }
   .btn-primary {
-    background: linear-gradient(135deg, var(--c-primary), #7c5cff);
-    color: #fff; box-shadow: 0 6px 24px rgba(79,110,247,.35);
+    background: linear-gradient(135deg, var(--c-primary), #9b6bff);
+    color: #fff; box-shadow: var(--shadow-btn-p);
   }
-  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(79,110,247,.45); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-btn-p-h); }
   .btn-secondary {
-    background: linear-gradient(135deg, var(--c-purple), #c084fc);
-    color: #fff; box-shadow: 0 6px 24px rgba(155,89,246,.3);
+    background: linear-gradient(135deg, var(--c-purple), #d4a8ff);
+    color: #fff; box-shadow: var(--shadow-btn-s);
   }
-  .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(155,89,246,.4); }
+  .btn-secondary:hover { transform: translateY(-3px); box-shadow: var(--shadow-btn-s-h); }
   .btn-outline {
-    background: rgba(255,255,255,.7);
+    background: var(--bg-btn-outline);
     color: var(--c-primary);
-    border: 2px solid rgba(79,110,247,.25);
+    border: 2px solid var(--border-btn-out);
   }
-  .btn-outline:hover { border-color: var(--c-primary); background: rgba(79,110,247,.06); }
+  .btn-outline:hover { border-color: var(--c-primary); background: rgba(124,92,255,.10); }
 
   /* ===== 信息框 ===== */
   .info-box {
     margin-top: 20px;
     padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(79,110,247,.08), rgba(109,213,237,.08));
-    border: 1.5px dashed rgba(79,110,247,.25);
+    background: var(--bg-info);
+    border: 1.5px dashed var(--border-info);
     border-radius: 14px;
     transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
   }
   .info-box:hover {
-    border-color: rgba(79,110,247,.45);
-    background: linear-gradient(135deg, rgba(79,110,247,.12), rgba(109,213,237,.12));
+    border-color: rgba(124,92,255,.50);
+    background: linear-gradient(135deg, rgba(124,92,255,.14), rgba(100,224,255,.10));
   }
   .info-box .title { font-size: 14px; font-weight: 600; color: var(--c-text); margin-bottom: 6px; }
   .info-box .desc  { font-size: 13px; color: var(--c-sub); line-height: 1.8; }
   .info-box code {
-    background: rgba(79,110,247,.1);
+    background: var(--bg-info-code);
     padding: 2px 10px;
     border-radius: 6px;
-    color: var(--c-primary);
+    color: var(--c-cyan);
     font-weight: 700; font-size: 14px;
   }
 
@@ -264,6 +389,7 @@
     .side-nav-item { padding: 10px 14px; font-size: 13px; }
     .side-nav-item:hover { transform: translateY(-2px); }
     .main-wrapper { margin-left: 0; }
+    .theme-toggle { top: 12px; right: 12px; width: 44px; height: 44px; font-size: 18px; }
   }
   @media (max-width: 640px) {
     .page-header h1 { font-size: 26px; }
@@ -274,6 +400,15 @@
 </style>
 </head>
 <body>
+
+<!-- 星空背景画布 -->
+<canvas id="star-canvas"></canvas>
+
+<!-- 昼夜切换按钮 -->
+<button class="theme-toggle" id="themeToggle" title="切换昼夜模式" aria-label="切换主题">
+  <span class="icon-moon">🌙</span>
+  <span class="icon-sun">☀️</span>
+</button>
 
 <!-- 左侧导航 -->
 <aside class="side-nav">
@@ -291,7 +426,7 @@
 
   <div class="page-header">
     <h1>✨ 资源导航中心</h1>
-    <p>蓝 · 紫 · 亮色主题 · 一键直达</p>
+    <p>蓝紫星空 · 昼夜可切换 · 一键直达</p>
   </div>
 
   <nav class="tab-bar">
@@ -452,6 +587,7 @@
 </div><!-- /main-wrapper -->
 
 <script>
+  /* ===== Tab 切换逻辑 ===== */
   const tabs   = document.querySelectorAll('.tab-bar a');
   const panels = document.querySelectorAll('.panel');
   const hashMap = {
@@ -481,6 +617,121 @@
     const t = document.querySelector(`.tab-bar a[data-target="${hashMap[hash]}"]`);
     if (t) activate(t);
   }
+
+  /* ===== 昼夜切换逻辑 ===== */
+  const themeToggle = document.getElementById('themeToggle');
+  const root        = document.documentElement;
+  const STORAGE_KEY  = 'nav-theme';
+
+  // 默认 dark，但优先读取本地存储
+  const saved = localStorage.getItem(STORAGE_KEY) || 'dark';
+  root.setAttribute('data-theme', saved);
+
+  themeToggle.addEventListener('click', () => {
+    const cur = root.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem(STORAGE_KEY, next);
+  });
+
+  /* ===== 星空粒子动画 ===== */
+  const canvas = document.getElementById('star-canvas');
+  const ctx    = canvas.getContext('2d');
+  let stars    = [];
+  let shootingStars = [];
+  let w, h, dpr;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    w = canvas.width  = window.innerWidth  * dpr;
+    h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width  = window.innerWidth  + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    initStars();
+  }
+
+  function initStars() {
+    const count = Math.floor((window.innerWidth * window.innerHeight) / 4500);
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: (Math.random() * 1.6 + 0.3) * dpr,
+        a: Math.random() * 0.7 + 0.3,
+        da: (Math.random() * 0.02 + 0.005) * (Math.random() < 0.5 ? -1 : 1),
+        color: ['#ffffff', '#c4b5fd', '#a5f3fc', '#ddd6fe'][Math.floor(Math.random() * 4)]
+      });
+    }
+  }
+
+  function spawnShootingStar() {
+    if (Math.random() < 0.008 && shootingStars.length < 2) {
+      shootingStars.push({
+        x: Math.random() * w * 0.6,
+        y: Math.random() * h * 0.4,
+        len: (Math.random() * 120 + 60) * dpr,
+        speed: (Math.random() * 8 + 6) * dpr,
+        angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+        life: 1,
+        decay: 0.012 + Math.random() * 0.008
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    // 星星
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a > 1) { s.a = 1; s.da *= -1; }
+      if (s.a < 0.15) { s.a = 0.15; s.da *= -1; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.color;
+      ctx.globalAlpha = s.a;
+      ctx.fill();
+      // 大一点的星加光晕
+      if (s.r > 1.5 * dpr) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = s.a * 0.12;
+        ctx.fill();
+      }
+    });
+    ctx.globalAlpha = 1;
+
+    // 流星
+    spawnShootingStar();
+    shootingStars = shootingStars.filter(ss => {
+      ss.x += Math.cos(ss.angle) * ss.speed;
+      ss.y += Math.sin(ss.angle) * ss.speed;
+      ss.life -= ss.decay;
+      if (ss.life <= 0) return false;
+
+      const tailX = ss.x - Math.cos(ss.angle) * ss.len;
+      const tailY = ss.y - Math.sin(ss.angle) * ss.len;
+      const grad = ctx.createLinearGradient(ss.x, ss.y, tailX, tailY);
+      grad.addColorStop(0, `rgba(255,255,255,${ss.life})`);
+      grad.addColorStop(0.3, `rgba(196,181,253,${ss.life * 0.5})`);
+      grad.addColorStop(1, `rgba(124,92,255,0)`);
+      ctx.beginPath();
+      ctx.moveTo(ss.x, ss.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.lineWidth = 2 * dpr;
+      ctx.strokeStyle = grad;
+      ctx.stroke();
+      return true;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
 </script>
 </body>
 </html>
