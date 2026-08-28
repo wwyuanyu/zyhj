@@ -303,6 +303,13 @@
     z-index: 9999;
     color: #ff88a2;
     pointer-events: none;
+    will-change: transform, top;
+    /* 兜底尺寸，JS 会覆盖；移动端由媒体查询收敛 */
+    font-size: 20px;
+  }
+  /* 移动端：限制爱心最大尺寸，避免在小屏上显得巨大 */
+  @media (max-width: 640px) {
+    .heart { font-size: 14px; }
   }
 
   /* ===== 响应式 ===== */
@@ -538,6 +545,16 @@
   }
 
   /* ===== 爱心飘落特效（来自 JS.html） ===== */
+  // 根据屏幕宽度计算缩放系数：PC 保持 1，窄屏（手机）自动收敛，
+  // 避免在高 DPR 的小屏手机上爱心显得巨大。
+  function heartScale() {
+    const w = window.innerWidth;
+    if (w <= 380)  return 0.55; // 小屏手机
+    if (w <= 640)  return 0.7;  // 普通手机
+    if (w <= 900)  return 0.85; // 平板/大屏手机
+    return 1;                   // PC
+  }
+
   function createHeart() {
     const h = document.createElement('div');
     h.className = 'heart';
@@ -547,7 +564,8 @@
     let speedY = 1.2 + Math.random() * 2.2;     // 下落速度
     let rotate = 0;
     let rotateSpeed = (Math.random() - 0.5) * 4; // 旋转速度
-    let size = 18 + Math.random() * 22;          // 随机大小
+    // 尺寸乘以屏幕缩放系数：手机上最大不超过 ~22px，PC 保持 18~40px
+    let size = (18 + Math.random() * 22) * heartScale();
 
     h.style.cssText = `
       left:${x}px;
@@ -571,12 +589,18 @@
     requestAnimationFrame(tick);
   }
 
+  // 根据屏幕宽度动态调整初始数量与生成间隔，移动端更少更稀疏
+  const isMobile = window.innerWidth <= 640;
+  const initCount   = isMobile ? 5 : 8;   // 初始一批的数量
+  const spawnDelay  = isMobile ? 320 : 200; // 初始批次间隔(ms)
+  const spawnInterval = isMobile ? 520 : 350; // 持续生成间隔(ms)
+
   // 立刻生成一批爱心，打开页面马上就有
-  for (let i = 0; i < 8; i++) {
-    setTimeout(createHeart, i * 200);
+  for (let i = 0; i < initCount; i++) {
+    setTimeout(createHeart, i * spawnDelay);
   }
   // 持续生成
-  setInterval(createHeart, 350);
+  setInterval(createHeart, spawnInterval);
 </script>
 </body>
 </html>
