@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>资源导航</title>
-<link rel="icon" type="image/jpeg" sizes="32x32" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEY22ZqeGDVMsmh3m6U368qqg9uPDBy_AACrCIAAhVdyVdqcQo2GYsynj0E.jpg">
+<link rel="icon" type="image/jpeg" sizes="32x32" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaHVRqkr3tjBORH2kGykGqD-gueDmPawACVyQAAmiKmVRNK96kIai3aj0E.jpeg">
+<link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaHVRqkr3tjBORH2kGykGqD-gueDmPawACVyQAAmiKmVRNK96kIai3aj0E.jpeg">
+<link rel="shortcut icon" type="image/jpeg" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaHVRqkr3tjBORH2kGykGqD-gueDmPawACVyQAAmiKmVRNK96kIai3aj0E.jpeg">
 <style>
   /* ===== 全局配色变量（粉色爱心主题，单主题，已删除昼夜切换）===== */
   :root {
@@ -297,19 +299,19 @@
   /* 底部 */
   .footer { margin-top: 48px; color: var(--c-mute); font-size: 13px; text-align: center; }
 
-  /* ===== 爱心飘落特效（来自 JS.html，可独立使用） ===== */
-  .heart {
-    position: fixed;
-    z-index: 9999;
-    color: #ff88a2;
-    pointer-events: none;
-    will-change: transform, top;
-    /* 兜底尺寸，JS 会覆盖；移动端由媒体查询收敛 */
-    font-size: 20px;
+  /* ===== 站点主图（全站统一图片） ===== */
+  .site-logo {
+    width: 120px; height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+    display: block;
+    border: 3px solid rgba(230,90,122,.35);
+    box-shadow: 0 10px 30px rgba(230,90,122,.28);
+    background: #fff;
   }
-  /* 移动端：限制爱心最大尺寸，避免在小屏上显得巨大 */
   @media (max-width: 640px) {
-    .heart { font-size: 14px; }
+    .site-logo { width: 92px; height: 92px; }
   }
 
   /* ===== 响应式 ===== */
@@ -351,8 +353,9 @@
 <div class="main-wrapper">
 
   <div class="page-header">
+    <img class="site-logo" src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEaHVRqkr3tjBORH2kGykGqD-gueDmPawACVyQAAmiKmVRNK96kIai3aj0E.jpeg" alt="站点主图">
     <h1>✨ 资源导航中心</h1>
-    <p>粉色爱心 · 飘落特效 · 一键直达</p>  <!-- 已替换原「蓝紫星空 · 昼夜可切换」 -->
+    <p>粉色爱心 · 一键直达</p>
   </div>
 
   <nav class="tab-bar">
@@ -544,63 +547,6 @@
     if (t) activate(t);
   }
 
-  /* ===== 爱心飘落特效（来自 JS.html） ===== */
-  // 根据屏幕宽度计算缩放系数：PC 保持 1，窄屏（手机）自动收敛，
-  // 避免在高 DPR 的小屏手机上爱心显得巨大。
-  function heartScale() {
-    const w = window.innerWidth;
-    if (w <= 380)  return 0.55; // 小屏手机
-    if (w <= 640)  return 0.7;  // 普通手机
-    if (w <= 900)  return 0.85; // 平板/大屏手机
-    return 1;                   // PC
-  }
-
-  function createHeart() {
-    const h = document.createElement('div');
-    h.className = 'heart';
-    h.innerText = '♥';
-    let x = Math.random() * window.innerWidth;
-    let y = -40;
-    let speedY = 1.2 + Math.random() * 2.2;     // 下落速度
-    let rotate = 0;
-    let rotateSpeed = (Math.random() - 0.5) * 4; // 旋转速度
-    // 尺寸乘以屏幕缩放系数：手机上最大不超过 ~22px，PC 保持 18~40px
-    let size = (18 + Math.random() * 22) * heartScale();
-
-    h.style.cssText = `
-      left:${x}px;
-      top:${y}px;
-      font-size:${size}px;
-      opacity:0.55;
-    `;
-    document.body.appendChild(h);
-
-    function tick() {
-      y += speedY;
-      rotate += rotateSpeed;
-      h.style.top = y + 'px';
-      h.style.transform = `rotate(${rotate}deg)`;
-      if (y < window.innerHeight + 60) {
-        requestAnimationFrame(tick);
-      } else {
-        h.remove(); // 飘出屏幕后移除，防止内存泄漏
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
-  // 根据屏幕宽度动态调整初始数量与生成间隔，移动端更少更稀疏
-  const isMobile = window.innerWidth <= 640;
-  const initCount   = isMobile ? 5 : 8;   // 初始一批的数量
-  const spawnDelay  = isMobile ? 320 : 200; // 初始批次间隔(ms)
-  const spawnInterval = isMobile ? 520 : 350; // 持续生成间隔(ms)
-
-  // 立刻生成一批爱心，打开页面马上就有
-  for (let i = 0; i < initCount; i++) {
-    setTimeout(createHeart, i * spawnDelay);
-  }
-  // 持续生成
-  setInterval(createHeart, spawnInterval);
 </script>
 </body>
 </html>
